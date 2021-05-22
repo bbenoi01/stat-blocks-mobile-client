@@ -30,7 +30,8 @@ export default class AddCreatureScreen extends Component {
         intelligence: '',
         wisdom: '',
         charisma: '',
-        savingThrows: '',
+        savingThrowsInput: '',
+        savingThrows: [],
         skillsInput: '',
         skills: [],
         vulnerabilitiesInput: '',
@@ -138,9 +139,19 @@ export default class AddCreatureScreen extends Component {
         })
     }
 
-    handleSavingThrows = (savingThrows) => {
+    handleSavingThrowsInput = (savingThrowsInput) => {
         this.setState({
-            savingThrows
+            savingThrowsInput
+        })
+    }
+
+    handleSavingThrowAdd = () => {
+        this.setState({
+            savingThrows: [
+                ...this.state.savingThrows,
+                this.state.savingThrowsInput
+            ],
+            savingThrowsInput: ''
         })
     }
 
@@ -354,7 +365,8 @@ export default class AddCreatureScreen extends Component {
             intelligence: '',
             wisdom: '',
             charisma: '',
-            savingThrows: '',
+            savingThrowsInput: '',
+            savingThrows: [],
             skillsInput: '',
             skills: [],
             vulnerabilitiesInput: '',
@@ -395,6 +407,7 @@ export default class AddCreatureScreen extends Component {
             intelligence,
             wisdom,
             charisma,
+            savingThrowsInput,
             savingThrows,
             skillsInput,
             skills,
@@ -584,16 +597,29 @@ export default class AddCreatureScreen extends Component {
                                     onChangeText={this.handleCharisma}
                                 />
                             </View>
+                        </View>
+                        <View style={styles.multiRow}>
                             <View style={{ flex: 1 }}>
                                 <Input
                                     placeholder='Saving Throws'
-                                    value={savingThrows}
+                                    value={savingThrowsInput}
                                     style={styles.multiRowInput}
-                                    onChangeText={this.handleSavingThrows}
+                                    onChangeText={this.handleSavingThrowsInput}
+                                    rightIcon={
+                                        <Icon
+                                            name='add'
+                                            onPress={this.handleSavingThrowAdd}
+                                        /> 
+                                    }
                                 />
+                                <Surface
+                                    style={styles.surface}
+                                >
+                                    <Text>
+                                        {savingThrows.map(sThrow => sThrow + ', ')}
+                                    </Text>
+                                </Surface>
                             </View>
-                        </View>
-                        <View style={styles.multiRow}>
                             <View style={{ flex: 1 }}>
                                 <Input
                                     placeholder='Skills'

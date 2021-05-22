@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 import {
@@ -25,21 +25,19 @@ export default class CreatureList extends Component {
                         <TouchableOpacity
                             onPress={() => handlePress(item)}
                         >
-                            <ListItem bottomDivider>
-                                <ListItem.Content>
-                                    <ListItem.Title>
-                                        {item.name}
-                                    </ListItem.Title>
-                                    <ListItem.Subtitle>
-                                        {item.size + " " + item.type + " (" + item.tag + "), " + item.alignment}
-                                    </ListItem.Subtitle>
-                                </ListItem.Content>
+                            <ListItem
+                                bottomDivider
+                                style={styles.item}
+                            >
+                                    <ListItem.Content>
+                                        <ListItem.Title>
+                                            {item.name}
+                                        </ListItem.Title>
+                                        <ListItem.Subtitle>
+                                            {item.size + " " + item.type + " (" + item.tag + "), " + item.alignment}
+                                        </ListItem.Subtitle>
+                                    </ListItem.Content>
                             </ListItem>
-                            {/* <ListItem
-                                title={item.name}
-                                description={item.size + " " + item.type + " (" + item.tag + "), " + item.alignment}
-                                style={{ borderWidth: 2, borderColor: 'black'}}
-                            /> */}
                         </TouchableOpacity>
                     )
                 }}
@@ -49,5 +47,7 @@ export default class CreatureList extends Component {
 }
 
 const styles = StyleSheet.create({
-
+    item: {
+        marginTop: 5
+    }
 })

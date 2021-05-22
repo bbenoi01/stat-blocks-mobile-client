@@ -14,7 +14,7 @@ export default class AppHeader extends Component {
         return (
             <Header
                 leftComponent={routeName === 'List Details' ? <CoolBkBtn navigation={navigation}/> : null}
-                centerComponent={<Text h3 style={{ color: "#f5f5f5" }}>Stat Blocks</Text>}
+                centerComponent={<Text h4 style={{ color: "#f5f5f5" }}>Stat Blocks</Text>}
                 rightComponent={<AuthBtn />}
                 containerStyle={{ backgroundColor: 'black' }}
             />
