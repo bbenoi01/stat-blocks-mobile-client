@@ -1,21 +1,122 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation-tabs';
+import { Provider } from 'react-redux';
+import rootStore from './src/rootStore';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import AppHeader from './src/components/AppHeader';
+import HomeScreen from './src/screens/HomeScreen';
+import CreatureListScreen from './src/screens/CreatureListScreen';
+import AddCreatureScreen from './src/screens/AddCreatureScreen';
+import CreatureDetailScreen from './src/screens/CreatureDetailScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+
+const homeFlow = createStackNavigator({
+  Home: createMaterialTopTabNavigator({
+    Main: HomeScreen,
+    MainDetails: CreatureDetailScreen
+  },
+  {
+    swipeEnabled: false,
+    tabBarOptions: {
+      style: {
+        display: 'none'
+      }
+    }
+  })
+},
+{
+  defaultNavigationOptions: {
+    headerShown: false
+  }
+})
+
+homeFlow.navigationOptions = () => {
+  return {
+    title: 'Home'
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const creatureFlow = createStackNavigator({
+  Creatures: createMaterialTopTabNavigator({
+    CreatureList: createMaterialTopTabNavigator({
+      List: CreatureListScreen,
+      ListDetails: CreatureDetailScreen
+    },
+    {
+      swipeEnabled: false,
+      tabBarOptions: {
+        style: {
+          display: 'none'
+        }
+      }
+    }),
+    AddCreature: AddCreatureScreen
   },
-});
+  {
+    swipeEnabled: false
+  })
+},
+{
+  defaultNavigationOptions: {
+    headerShown: false
+  }
+})
+
+creatureFlow.navigationOptions = () => {
+  return {
+    title: 'Creatures'
+  }
+}
+
+const settingsFlow = createStackNavigator({
+  Settings: SettingsScreen
+},
+{
+  defaultNavigationOptions: {
+    headerShown: false
+  }
+})
+
+settingsFlow.navigationOptions = () => {
+  return {
+    title: 'Settings'
+  }
+}
+
+
+
+const switchNavigator = createSwitchNavigator({
+  SBApp: createStackNavigator({
+    bottomNav: createBottomTabNavigator({
+      homeFlow,
+      creatureFlow,
+      settingsFlow
+    },
+    {
+      tabBarOptions: {
+        activeTintColor: 'purple',
+        inactiveTintColor: 'grey',
+        style: {
+          backgroundColor: 'black'
+        }
+      }
+    })
+  },
+  {
+    defaultNavigationOptions: {
+      header: props => <AppHeader {...props}/>
+    }
+  })
+})
+
+const App = createAppContainer(switchNavigator);
+
+export default () => {
+  return (
+    <Provider store={ rootStore }>
+      <App />
+    </Provider>
+  );
+};
