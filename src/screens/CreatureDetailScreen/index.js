@@ -3,7 +3,7 @@ import CreatureDetailScreen from './CreatureDetailScreen';
 
 function mapStoreToProps(store) {
     return {
-
+        campaigns: store.app.campaigns
     }
 }
 

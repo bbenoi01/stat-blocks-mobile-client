@@ -6,6 +6,7 @@ const INITIAL_STATE = {
     loading: true,
     authenticated: false,
     creatures: [],
+    campaigns: [],
     errors: {},
     routeName: ''
 
@@ -34,6 +35,13 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 creatures: payload
+            }
+        }
+
+        case (types.GET_CAMPAIGNS): {
+            return {
+                ...state,
+                campaigns: payload
             }
         }
 

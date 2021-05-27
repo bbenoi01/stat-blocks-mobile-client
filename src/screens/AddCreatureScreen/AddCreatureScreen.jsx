@@ -48,9 +48,11 @@ export default class AddCreatureScreen extends Component {
         experiencePoints: null,
         traitsInput: '',
         traits: [],
-        actionsInput: '',
+        actionInput: '',
         actions: [],
-        reactionsInput: '',
+        legendaryActionInput: '',
+        legendaryActions: [],
+        reactionInput: '',
         reactions: [],
         notes: ''
     }
@@ -279,9 +281,9 @@ export default class AddCreatureScreen extends Component {
         })
     }
 
-    handleActionsInput = (actionsInput) => {
+    handleActionInput = (actionInput) => {
         this.setState({
-            actionsInput
+            actionInput
         })
     }
 
@@ -289,15 +291,31 @@ export default class AddCreatureScreen extends Component {
         this.setState({
             actions: [
                 ...this.state.actions,
-                this.state.actionsInput
+                this.state.actionInput
             ],
-            actionsInput: ''
+            actionInput: ''
         })
     }
 
-    handleReactionsInput = (reactionsInput) => {
+    handleLegendaryInput = (legendaryActionInput) => {
         this.setState({
-            reactionsInput
+            legendaryActionInput
+        })
+    }
+
+    handleLegendaryAdd = () => {
+        this.setState({
+            legendaryActions: [
+                ...this.state.legendaryActions,
+                this.state.legendaryActionInput
+            ],
+            legendaryActionInput: ''
+        })
+    }
+
+    handleReactionInput = (reactionInput) => {
+        this.setState({
+            reactionInput
         })
     }
 
@@ -305,9 +323,9 @@ export default class AddCreatureScreen extends Component {
         this.setState({
             reactions: [
                 ...this.state.reactions,
-                this.state.reactionsInput
+                this.state.reactionInput
             ],
-            reactionsInput: ''
+            reactionInput: ''
         })
     }
 
@@ -345,6 +363,7 @@ export default class AddCreatureScreen extends Component {
             experiencePoints: parseInt(this.state.experiencePoints),
             traits: this.state.traits,
             actions: this.state.actions,
+            legendaryActions: this.state.legendaryActions,
             reactions: this.state.reactions,
             notes: this.state.notes
         };
@@ -383,9 +402,11 @@ export default class AddCreatureScreen extends Component {
             experiencePoints: null,
             traitsInput: '',
             traits: [],
-            actionsInput: '',
+            actionInput: '',
             actions: [],
-            reactionsInput: '',
+            legendaryActionInput: '',
+            legendaryActions: [],
+            reactionInput: '',
             reactions: [],
             notes: ''
         })
@@ -425,9 +446,11 @@ export default class AddCreatureScreen extends Component {
             experiencePoints,
             traitsInput,
             traits,
-            actionsInput,
+            actionInput,
             actions,
-            reactionsInput,
+            legendaryActionInput,
+            legendaryActions,
+            reactionInput,
             reactions,
             notes
         } = this.state;
@@ -794,9 +817,9 @@ export default class AddCreatureScreen extends Component {
                             <View style={{ flex: 1 }}>
                                 <Input
                                     placeholder='Actions'
-                                    value={actionsInput}
+                                    value={actionInput}
                                     style={styles.multiRowInput}
-                                    onChangeText={this.handleActionsInput}
+                                    onChangeText={this.handleActionInput}
                                     rightIcon={
                                         <Icon
                                             name='add'
@@ -812,12 +835,35 @@ export default class AddCreatureScreen extends Component {
                                     </Text>
                                 </Surface>
                             </View>
+                        </View>
+                        <View style={styles.multiRow}>
+                            <View style={{ flex: 1 }}>
+                                <Input
+                                    placeholder='Legendary Actions'
+                                    value={legendaryActionInput}
+                                    style={styles.multiRowInput}
+                                    onChangeText={this.handleLegendaryInput}
+                                    rightIcon={
+                                        <Icon
+                                            name='add'
+                                            onPress={this.handleLegendaryAdd}
+                                        />
+                                    }
+                                />
+                                <Surface
+                                    style={styles.surface}
+                                >
+                                    <Text>
+                                        {legendaryActions.map(legendaryAction => legendaryAction + ', ')}
+                                    </Text>
+                                </Surface>
+                            </View>
                             <View style={{ flex: 1 }}>
                                 <Input
                                     placeholder='Reactions'
-                                    value={reactionsInput}
+                                    value={reactionInput}
                                     style={styles.multiRowInput}
-                                    onChangeText={this.handleReactionsInput}
+                                    onChangeText={this.handleReactionInput}
                                     rightIcon={
                                         <Icon
                                             name='add'

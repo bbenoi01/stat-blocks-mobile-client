@@ -15,6 +15,17 @@ export function signIn() {
                     })
                 }
             })
+            .then(() => {
+                creatureApi.get('/mycampaigns')
+                    .then(res => {
+                        console.log('Campaigns', res.data);
+                        dispatch({
+                            type: types.GET_CAMPAIGNS,
+                            payload: res.data
+                        })
+                    })
+
+            })
             .catch(err => {
                 dispatch({
                     type: types.SET_ERRORS,
