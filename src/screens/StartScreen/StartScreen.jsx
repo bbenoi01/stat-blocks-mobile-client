@@ -4,7 +4,7 @@ import image from '../../../assets/monster_manual.jpg';
 
 const { height, width } = Dimensions.get('window');
 
-const SplashScreen = () => {
+const StartScreen = () => {
     return (
         <ImageBackground style={styles.container} source={image}/>
     );
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SplashScreen;
+export default StartScreen;

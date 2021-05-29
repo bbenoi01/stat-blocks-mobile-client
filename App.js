@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import rootStore from './src/rootStore';
 
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
-import SplashScreen from './src/screens/SplashScreen';
+import StartScreen from './src/screens/StartScreen';
 import AppHeader from './src/components/AppHeader';
 import HomeScreen from './src/screens/HomeScreen';
 import CreatureListScreen from './src/screens/CreatureListScreen';
@@ -93,7 +93,7 @@ settingsFlow.navigationOptions = () => {
 const switchNavigator = createSwitchNavigator({
   SBApp: createStackNavigator({
     ResolveAuth: ResolveAuthScreen,
-    Splash: SplashScreen,
+    Start: StartScreen,
     bottomNav: createBottomTabNavigator({
       homeFlow,
       creatureFlow,
