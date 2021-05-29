@@ -19,16 +19,12 @@ export function signIn() {
             .then(() => {
                 creatureApi.get('/mycampaigns')
                     .then(res => {
-                        console.log('Campaigns', res.data);
                         dispatch({
                             type: types.GET_CAMPAIGNS,
                             payload: res.data
                         })
                     })
-                    .then(() => {
-                        navigate('homeFlow');
-                    })
-
+                    .then(() => navigate('homeFlow'))
             })
             .catch(err => {
                 dispatch({
@@ -45,7 +41,7 @@ export function signOut() {
             type: types.SET_UNAUTHENTICATED
         })
         await AsyncStorage.removeItem('token');
-        navigate('Splash');
+        navigate('Start');
     }
 }
 
@@ -57,9 +53,16 @@ export function tryLocalSignin() {
             dispatch({
                 type: types.SET_AUTHENTICATED
             });
-            navigate('homeFlow');
+            creatureApi.get('/mycampaigns')
+                .then(res => {
+                    dispatch({
+                        type: types.GET_CAMPAIGNS,
+                        payload: res.data
+                    })
+                })
+                .then(() => navigate('homeFlow'))
         } else {
-            navigate('Splash');
+            navigate('Start');
         }
     }
 };
@@ -128,7 +131,10 @@ export function addCampaign(campaignData) {
             .then(res => {
                 if (res.status === 200) {
                     alert('Campaign added successfully');
-                    getUserCampaigns();
+                    dispatch({
+                        type: types.GET_CAMPAIGNS,
+                        payload: res.data
+                    })
                 }
             })
             .catch(err => {
@@ -148,7 +154,10 @@ export function updateCampaign(campaignData) {
             .then(res => {
                 if (res.status === 200) {
                     alert('Campaign updated successfully');
-                    getUserCampaigns();
+                    dispatch({
+                        type: types.GET_CAMPAIGNS,
+                        payload: res.data
+                    })
                 }
             })
             .catch(err => {
@@ -160,20 +169,11 @@ export function updateCampaign(campaignData) {
     }
 }
 
-export function getUserCampaigns() {
+export function toggleVisibility(visibility) {
     return (dispatch) => {
-        creatureApi.get('/mycampaigns')
-            .then(res => {
-                dispatch({
-                    type: types.GET_CAMPAIGNS,
-                    payload: res.data
-                })
-            })
-            .catch(err => {
-                dispatch({
-                    type: types.SET_ERRORS,
-                    payload: err.response.data.error
-                })
-            })
+        dispatch({
+            type: types.TOGGLE_VISIBILITY,
+            payload: visibility
+        })
     }
 }

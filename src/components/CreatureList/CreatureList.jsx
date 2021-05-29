@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 import {
-    updateRoute,
-    getUserCampaigns
+    updateRoute
 } from '../../screens/actions';
 
 export default class CreatureList extends Component {
 
     handlePress = (item) => {
         const { navigation, dispatch } = this.props;
-        dispatch(getUserCampaigns());
         navigation.navigate('ListDetails', { item });
         dispatch(updateRoute('List Details'));
     }
 
     render() {
-        const { creatures, navigation, dispatch } = this.props;
+        const { creatures } = this.props;
 
         return (
             <FlatList

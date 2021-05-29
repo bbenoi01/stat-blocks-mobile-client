@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Dimensions, ImageBackground, StyleSheet } from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
 import image from '../../../assets/monster_manual.jpg';
 
-const { height, width } = Dimensions.get('window');
+// const { height, width } = Dimensions.get('window');
 
 const StartScreen = () => {
     return (
@@ -12,8 +12,9 @@ const StartScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        height,
-        width
+        height: '100%',
+        width: '100%',
+        resizeMode: 'cover'
     }
 })
 

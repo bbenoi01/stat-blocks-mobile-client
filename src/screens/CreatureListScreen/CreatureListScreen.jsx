@@ -28,6 +28,7 @@ export default class CreatureListScreen extends Component {
                     ) : null}
                     <CreatureList
                         navigation={navigation}
+                        creatures={creatures}
                     />
                 </ImageBackground>
             </View>

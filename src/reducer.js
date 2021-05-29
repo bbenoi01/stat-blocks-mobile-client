@@ -8,8 +8,8 @@ const INITIAL_STATE = {
     creatures: [],
     campaigns: [],
     errors: {},
-    routeName: ''
-
+    routeName: '',
+    visible: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,8 +26,14 @@ export default (state = INITIAL_STATE, action) => {
 
         case (types.SET_UNAUTHENTICATED): {
             return {
-                ...state,
-                authenticated: false
+                userData: {},
+                loading: true,
+                authenticated: false,
+                creatures: [],
+                campaigns: [],
+                errors: {},
+                routeName: '',
+                visible: false
             }
         }
 
@@ -56,6 +62,13 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 routeName: ''
+            }
+        }
+
+        case (types.TOGGLE_VISIBILITY): {
+            return {
+                ...state,
+                visible: payload
             }
         }
         

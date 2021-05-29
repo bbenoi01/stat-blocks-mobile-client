@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { View, ImageBackground, StyleSheet } from 'react-native';
 
 import image from '../../../assets/parchment.jpg';
-import CampaignList from '../../components/CampaignList';
+import CreatureList from '../../components/CreatureList';
 
-export default class HomeScreen extends Component {
+export default class CampaignScreen extends Component {
     render() {
+        const { navigation } = this.props;
+        const monsters = navigation.getParam('monsters');
+
         return (
             <View style={styles.container}>
                 <ImageBackground style={styles.background} source={image}>
-                    <CampaignList />
+                    <CreatureList creatures={monsters}/>
                 </ImageBackground>
             </View>
         );

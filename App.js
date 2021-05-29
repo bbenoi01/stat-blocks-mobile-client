@@ -9,16 +9,22 @@ import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import StartScreen from './src/screens/StartScreen';
 import AppHeader from './src/components/AppHeader';
 import HomeScreen from './src/screens/HomeScreen';
+import CampaignScreen from './src/screens/CampaignScreen/CampaignScreen';
 import CreatureListScreen from './src/screens/CreatureListScreen';
 import AddCreatureScreen from './src/screens/AddCreatureScreen';
 import CreatureDetailScreen from './src/screens/CreatureDetailScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import { setNavigator } from './src/navigationRef';
 
+const campaignFlow = createMaterialTopTabNavigator({
+  Campaign: CampaignScreen,
+  MonsterDetails: CreatureDetailScreen
+})
+
 const homeFlow = createStackNavigator({
   Home: createMaterialTopTabNavigator({
     Main: HomeScreen,
-    MainDetails: CreatureDetailScreen
+    campaignFlow
   },
   {
     swipeEnabled: false,

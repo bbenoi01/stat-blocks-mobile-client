@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import {
     Header,
     Text

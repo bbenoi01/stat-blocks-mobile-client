@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CreatureDetailScreen from './CreatureDetailScreen';
+import CampaignList from './CapmaignList';
 
 function mapStoreToProps(store) {
     return {
@@ -8,4 +8,4 @@ function mapStoreToProps(store) {
     }
 }
 
-export default connect(mapStoreToProps)(CreatureDetailScreen);
+export default connect(mapStoreToProps)(CampaignList);
