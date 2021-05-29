@@ -6,19 +6,24 @@ import {
     Divider,
     FAB,
     Overlay,
-    Card,
-    ListItem
+    ListItem,
+    Input,
+    Icon
 } from 'react-native-elements';
 import image from '../../../assets/parchment.jpg';
 
 import {
-    resetRoute
+    resetRoute,
+    addCampaign,
+    updateCampaign
 } from '../actions';
 
 export default class CreatureDetailScreen extends Component {
 
     state = {
-        visible: false
+        visible: false,
+        name: '',
+        monsters: []
     }
 
     handlevisible = () => {
@@ -32,10 +37,47 @@ export default class CreatureDetailScreen extends Component {
         dispatch(resetRoute());
     }
 
+    handleNameInput = (name) => {
+        this.setState({
+            name
+        })
+    }
+
+    handleAddCampaign = (creature) => {
+        const { dispatch } = this.props;
+        const campaignData = {
+            name: this.state.name,
+            monsters: [
+                ...this.state.monsters,
+                creature
+            ]
+        }
+
+        dispatch(addCampaign(campaignData));
+
+        this.setState({
+            visible: !this.state.visible,
+            name: ''
+        })
+    }
+
+    handleAddMonster = (creature, {item}) => {
+        const { dispatch } = this.props;
+        const campaignData = {
+            id: item._id,
+            monster: creature
+        }
+
+        dispatch(updateCampaign(campaignData));
+
+        this.setState({
+            visible: !this.state.visible
+        })
+    }
+
     render() {
         const { navigation, campaigns } = this.props;
         const creature = navigation.getParam('item');
-        console.log('Its a monster!', creature);
 
         return (
             <View style={styles.container}>
@@ -49,34 +91,56 @@ export default class CreatureDetailScreen extends Component {
                                 <Text h2>{creature.name}</Text>
                                 <FAB title="Add to Campaign" onPress={this.handlevisible} color='black'/>
 
-                                <Overlay overlayStyle={{ paddingTop: 15, paddingBottom: 10 }} isVisible={this.state.visible} onBackdropPress={this.handlevisible}>
+                                <Overlay overlayStyle={{ paddingTop: 15, paddingBottom: 10, maxHeight: '80%', width: 350 }} isVisible={this.state.visible} onBackdropPress={this.handlevisible}>
                                     {campaigns.length > 0 ? (
                                         <>
-                                            <TouchableOpacity
+                                            <ListItem
+                                                bottomDivider
+                                                style={styles.item}
                                             >
-                                                <ListItem
-                                                    bottomDivider
-                                                    style={styles.item}
-                                                >
-                                                    <ListItem.Content>
-                                                        <ListItem.Title>
-                                                            Create New
-                                                        </ListItem.Title>
-                                                    </ListItem.Content>
-                                                </ListItem>
-                                            </TouchableOpacity>
+                                                <ListItem.Content>
+                                                    <Input
+                                                        placeholder='Create New'
+                                                        value={this.state.name}
+                                                        onChangeText={this.handleNameInput}
+                                                        rightIcon={
+                                                            <TouchableOpacity
+                                                                onPress={() => this.handleAddCampaign(creature)}
+                                                            >
+                                                                <Icon
+                                                                name='add'
+                                                                size={24}
+                                                                color='black'
+                                                                />
+                                                            </TouchableOpacity>
+                                                        }
+                                                    />
+                                                </ListItem.Content>
+                                            </ListItem>
                                             <FlatList
                                                 data={campaigns}
                                                 keyExtractor={item => item._id}
-                                                renderItem={(item) => {
+                                                renderItem={({item}) => {
+                                                    console.log(item);
                                                     return (
                                                         <TouchableOpacity
+                                                            onPress={() => this.handleAddMonster(creature, {item})}
                                                         >
                                                             <ListItem
                                                                 bottomDivider
                                                                 style={styles.item}
                                                             >
-
+                                                                <ListItem.Content>
+                                                                    <ListItem.Title>
+                                                                        {item.name}
+                                                                    </ListItem.Title>
+                                                                    <ListItem.Subtitle>
+                                                                       Number of monsters: {item.monsters.length}
+                                                                    </ListItem.Subtitle>
+                                                                    <ListItem.Subtitle>
+                                                                        {item.created}
+                                                                    </ListItem.Subtitle>
+                                                                </ListItem.Content>
                                                             </ListItem>
                                                         </TouchableOpacity>
                                                     )
@@ -84,21 +148,29 @@ export default class CreatureDetailScreen extends Component {
                                             />
                                         </>
                                     ) : (
-                                        <>
-                                        <TouchableOpacity
+                                        <ListItem
+                                            bottomDivider
+                                            style={styles.item}
                                         >
-                                            <ListItem
-                                                bottomDivider
-                                                style={styles.item}
-                                            >
-                                                <ListItem.Content>
-                                                    <ListItem.Title>
-                                                        Create New
-                                                    </ListItem.Title>
-                                                </ListItem.Content>
-                                            </ListItem>
-                                        </TouchableOpacity>
-                                        </>
+                                            <ListItem.Content>
+                                                <Input
+                                                    placeholder='Create New'
+                                                    value={this.state.name}
+                                                    onChangeText={this.handleNameInput}
+                                                    rightIcon={
+                                                        <TouchableOpacity
+                                                            onPress={() => this.handleAddCampaign(creature)}
+                                                        >
+                                                            <Icon
+                                                            name='add'
+                                                            size={24}
+                                                            color='black'
+                                                            />
+                                                        </TouchableOpacity>
+                                                    }
+                                                />
+                                            </ListItem.Content>
+                                        </ListItem>
                                     )}
                                 </Overlay>
                             </View>
@@ -221,9 +293,9 @@ const styles = StyleSheet.create({
     },
     item: {
         marginBottom: 5,
-        height: 65,
-        width: 300,
-        borderColor: 'red',
-        borderWidth: 5
+        // maxHeight: '80%',
+        // width: 300,
+        // borderColor: 'red',
+        // borderWidth: 5
     }
 })

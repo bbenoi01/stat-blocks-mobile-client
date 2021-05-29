@@ -3,18 +3,21 @@ import { FlatList, TouchableOpacity, ImageBackground, StyleSheet } from 'react-n
 import { ListItem } from 'react-native-elements';
 
 import {
-    updateRoute
+    updateRoute,
+    getUserCampaigns
 } from '../../screens/actions';
 
 export default class CreatureList extends Component {
 
+    handlePress = (item) => {
+        const { navigation, dispatch } = this.props;
+        dispatch(getUserCampaigns());
+        navigation.navigate('ListDetails', { item });
+        dispatch(updateRoute('List Details'));
+    }
+
     render() {
         const { creatures, navigation, dispatch } = this.props;
-
-        function handlePress(item) {
-            navigation.navigate('ListDetails', { item });
-            dispatch(updateRoute('List Details'));
-        }
 
         return (
             <FlatList
@@ -23,7 +26,7 @@ export default class CreatureList extends Component {
                 renderItem={({item}) => {
                     return (
                         <TouchableOpacity
-                            onPress={() => handlePress(item)}
+                            onPress={() => this.handlePress(item)}
                         >
                             <ListItem
                                 bottomDivider

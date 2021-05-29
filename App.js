@@ -5,12 +5,15 @@ import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-n
 import { Provider } from 'react-redux';
 import rootStore from './src/rootStore';
 
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import SplashScreen from './src/screens/SplashScreen';
 import AppHeader from './src/components/AppHeader';
 import HomeScreen from './src/screens/HomeScreen';
 import CreatureListScreen from './src/screens/CreatureListScreen';
 import AddCreatureScreen from './src/screens/AddCreatureScreen';
 import CreatureDetailScreen from './src/screens/CreatureDetailScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import { setNavigator } from './src/navigationRef';
 
 const homeFlow = createStackNavigator({
   Home: createMaterialTopTabNavigator({
@@ -89,6 +92,8 @@ settingsFlow.navigationOptions = () => {
 
 const switchNavigator = createSwitchNavigator({
   SBApp: createStackNavigator({
+    ResolveAuth: ResolveAuthScreen,
+    Splash: SplashScreen,
     bottomNav: createBottomTabNavigator({
       homeFlow,
       creatureFlow,
@@ -116,7 +121,7 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <Provider store={ rootStore }>
-      <App />
+      <App ref={(navigator) => { setNavigator(navigator) }} />
     </Provider>
   );
 };

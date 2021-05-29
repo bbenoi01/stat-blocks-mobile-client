@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { types } from '../types';
 import creatureApi from '../api/creatureApi';
+import { navigate } from '../navigationRef';
 
 export function signIn() {
     const email = "admin@admin.com";
@@ -24,6 +25,9 @@ export function signIn() {
                             payload: res.data
                         })
                     })
+                    .then(() => {
+                        navigate('homeFlow');
+                    })
 
             })
             .catch(err => {
@@ -41,22 +45,34 @@ export function signOut() {
             type: types.SET_UNAUTHENTICATED
         })
         await AsyncStorage.removeItem('token');
+        navigate('Splash');
     }
 }
+
+export function tryLocalSignin() {
+    return async (dispatch) => {
+        const token = await AsyncStorage.getItem('token');
+
+        if (token) {
+            dispatch({
+                type: types.SET_AUTHENTICATED
+            });
+            navigate('homeFlow');
+        } else {
+            navigate('Splash');
+        }
+    }
+};
 
 export function getCreatures() {
     return (dispatch) => {
         creatureApi.get('/creatures')
             .then(res => {
                 if (res.status === 200) {
-                    alert('Creatures are upon us!');
-                    // console.log('Got creatures', res.data);
                     dispatch({
                         type: types.GET_CREATURES,
                         payload: res.data
                     })
-                } else {
-                    alert("It's quiet, too quiet...")
                 }
             })
             .catch(err => {
@@ -96,12 +112,68 @@ export function updateRoute(routeName) {
             payload: routeName
         })
     }
-}
+};
 
 export function resetRoute() {
     return (dispatch) => {
         dispatch({
             type: types.RESET_ROUTE
         })
+    }
+};
+
+export function addCampaign(campaignData) {
+    return (dispatch) => {
+        creatureApi.post('/campaign', campaignData)
+            .then(res => {
+                if (res.status === 200) {
+                    alert('Campaign added successfully');
+                    getUserCampaigns();
+                }
+            })
+            .catch(err => {
+                dispatch({
+                    type: types.SET_ERRORS,
+                    payload: err.response.data.error
+                })
+            })
+    }
+}
+
+export function updateCampaign(campaignData) {
+    const { id, monster } = campaignData;
+
+    return (dispatch) => {
+        creatureApi.put(`/campaign/${id}`, { monster })
+            .then(res => {
+                if (res.status === 200) {
+                    alert('Campaign updated successfully');
+                    getUserCampaigns();
+                }
+            })
+            .catch(err => {
+                dispatch({
+                    type: types.SET_ERRORS,
+                    payload: err.response.data.error
+                })
+            })
+    }
+}
+
+export function getUserCampaigns() {
+    return (dispatch) => {
+        creatureApi.get('/mycampaigns')
+            .then(res => {
+                dispatch({
+                    type: types.GET_CAMPAIGNS,
+                    payload: res.data
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: types.SET_ERRORS,
+                    payload: err.response.data.error
+                })
+            })
     }
 }
